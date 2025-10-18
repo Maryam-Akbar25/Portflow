@@ -3,33 +3,26 @@ import Box from "components/Box";
 import Typography from "components/Typography";
 import { IoDocumentText } from "react-icons/io5";
 
-function ReportItem({ date, id, price }) {
+function ReportItem({ reportName }) {
   return (
     <Box
       component="li"
       display="flex"
       justifyContent="space-between"
       alignItems="center"
-      mb="32px"
+      mb="24px"
+      sx={{ cursor: "pointer" }}
     >
       <Box lineHeight={1}>
         <Typography display="block" variant="button" fontWeight="medium" color="white">
-          {date}
-        </Typography>
-        <Typography variant="caption" fontWeight="regular" color="text">
-          {id}
+          {reportName}
         </Typography>
       </Box>
-      <Box display="flex" alignItems="center">
-        <Typography variant="button" fontWeight="regular" color="text">
-          {price}
+      <Box display="flex" alignItems="center" lineHeight={0}>
+        <IoDocumentText color="#fff" size="15px" />
+        <Typography variant="button" fontWeight="medium" color="white" ml={1}>
+          PDF
         </Typography>
-        <Box display="flex" alignItems="center" lineHeight={0} ml={3} sx={{ cursor: "poiner" }}>
-          <IoDocumentText color="#fff" size="15px" />
-          <Typography variant="button" fontWeight="medium" color="text">
-            &nbsp;PDF
-          </Typography>
-        </Box>
       </Box>
     </Box>
   );
@@ -37,7 +30,7 @@ function ReportItem({ date, id, price }) {
 
 // Setting default values for the props of ReportItem
 ReportItem.defaultProps = {
-  noGutter: false,
+  reportName: "Report",
 };
 
 // Typechecking props for the ReportItem

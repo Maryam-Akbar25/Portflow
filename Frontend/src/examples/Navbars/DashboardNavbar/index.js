@@ -1,5 +1,5 @@
- import { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // @material-ui core components
@@ -10,11 +10,16 @@ import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
 import { BsExclamationCircleFill, BsExclamationTriangleFill } from "react-icons/bs";
 
-
-  import Box from "components/Box";
+import Box from "components/Box";
 import Typography from "components/Typography";
 import Input from "components/Input";
-
+import {
+  usePortflowUIController,
+  logout,
+  setTransparentNavbar,
+  setMiniSidenav,
+  setOpenConfigurator,
+} from "context";
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
 
@@ -27,18 +32,11 @@ import {
   navbarMobileMenu,
 } from "examples/Navbars/DashboardNavbar/styles";
 
- import {
-  usePortflowUIController,
-  setTransparentNavbar,
-  setMiniSidenav,
-  setOpenConfigurator,
-} from "context";
-
-
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
+  const navigate = useNavigate();
   const [controller, dispatch] = usePortflowUIController();
-  const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
+  const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, user } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
 
@@ -71,6 +69,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
 
+  const handleSignOut = () => {
+    logout(dispatch);
+    navigate("/sign-in");
+  };
+
   // Render the notifications menu
   const renderMenu = () => (
     <Menu
@@ -98,6 +101,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       />
     </Menu>
   );
+
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}
@@ -110,28 +114,43 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </Box>
         {isMini ? null : (
           <Box sx={(theme) => navbarRow(theme, { isMini })}>
-            <Box pr={1}>
-              {}
-            </Box>
+            <Box pr={1}>{}</Box>
             <Box color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in">
-                <IconButton sx={navbarIconButton} size="small">
+              {user ? (
+                // Sign Out Button
+                <IconButton sx={navbarIconButton} size="small" onClick={handleSignOut}>
                   <Icon
                     sx={({ palette: { dark, white } }) => ({
                       color: light ? white.main : dark.main,
                     })}
                   >
-                    account_circle
+                    logout
                   </Icon>
-                  <Typography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light ? "white" : "dark"}
-                  >
-                    Sign in
+                  <Typography variant="button" fontWeight="medium" color={light ? "white" : "dark"}>
+                    Sign out
                   </Typography>
                 </IconButton>
-              </Link>
+              ) : (
+                // Sign In Button
+                <Link to="/sign-in">
+                  <IconButton sx={navbarIconButton} size="small">
+                    <Icon
+                      sx={({ palette: { dark, white } }) => ({
+                        color: light ? white.main : dark.main,
+                      })}
+                    >
+                      account_circle
+                    </Icon>
+                    <Typography
+                      variant="button"
+                      fontWeight="medium"
+                      color={light ? "white" : "dark"}
+                    >
+                      Sign in
+                    </Typography>
+                  </IconButton>
+                </Link>
+              )}
               {}
               <IconButton
                 size="small"

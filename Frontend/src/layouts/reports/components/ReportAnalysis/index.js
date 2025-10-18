@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import Box from "components/Box";
 import Typography from "components/Typography";
 import Button from "components/Button";
-import ReportItem from "layouts/berthInfo/components/ReportItem";
+import ReportItem from "./ReportItem";
 
 function Report_Analysis() {
   return (
@@ -17,11 +17,11 @@ function Report_Analysis() {
       </Box>
       <Box>
         <Box component="ul" display="flex" flexDirection="column" p={0} m={0}>
-          <ReportItem date="Daily Delay Summary" />
-          <ReportItem date="OverRide Frequency" />
-          <ReportItem date="Summary of Berth Utilization" />
-          <ReportItem date="Ship Timings Report" />
-          <ReportItem date="ReBuild Reports" />
+          <ReportItem reportName="Daily Delay Summary" />
+          <ReportItem reportName="OverRide Frequency" />
+          <ReportItem reportName="Summary of Berth Utilization" />
+          <ReportItem reportName="Ship Timings Report" />
+          <ReportItem reportName="ReBuild Reports" />
         </Box>
       </Box>
     </Card>

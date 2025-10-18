@@ -6,12 +6,18 @@ import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
 import theme from "assets/theme";
 import { CacheProvider } from "@emotion/react";
-import routes from "routes";
+import { getRoutes as getRoutesFunction } from "routes";
 import { usePortflowUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import createCache from "@emotion/cache";
+import themeRTL from "assets/theme/theme-rtl";
 
+const rtlCache = createCache({
+  key: "css",
+  prepend: true,
+});
 export default function App() {
   const [controller, dispatch] = usePortflowUIController();
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
+  const { miniSidenav, direction, layout, openConfigurator, sidenavColor, user } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
   const handleOnMouseEnter = () => {
@@ -39,6 +45,9 @@ export default function App() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
+
+  // Get routes based on user role
+  const routes = getRoutesFunction(user?.role);
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
@@ -71,9 +80,14 @@ export default function App() {
           </>
         )}
         {layout === "vr" && <Configurator />}
-        <Routes>
+        {/* <Routes>
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/dashboard" />} />
+        </Routes> */}
+        <Routes>
+          <Route path="/" element={<Navigate to="/sign-in" />} />
+          {getRoutes(routes)}
+          <Route path="*" element={<Navigate to="/sign-in" />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -94,9 +108,14 @@ export default function App() {
         </>
       )}
       {layout === "vr" && <Configurator />}
-      <Routes>
+      {/* <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />
+      </Routes> */}
+      <Routes>
+        <Route path="/" element={<Navigate to="/sign-in" />} />
+        {getRoutes(routes)}
+        <Route path="*" element={<Navigate to="/sign-in" />} />
       </Routes>
     </ThemeProvider>
   );

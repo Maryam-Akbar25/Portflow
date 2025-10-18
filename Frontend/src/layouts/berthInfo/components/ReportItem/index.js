@@ -1,51 +1,76 @@
-import PropTypes from "prop-types";
+import { useEffect, useMemo, useState } from "react";
+import Card from "@mui/material/Card";
 import Box from "components/Box";
 import Typography from "components/Typography";
-import { IoDocumentText } from "react-icons/io5";
+import { api } from "utils/api";
 
-function Invoice({ date, id, price }) {
+function ReportItem() {
+  const [berths, setBerths] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const [b, s] = await Promise.all([api.getBerths(), api.getSchedules()]);
+        if (!mounted) return;
+        setBerths(b);
+        setSchedules(s);
+      } catch (e) {
+        setErr(e.message || "Failed to load report");
+      } finally {
+        setLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const summary = useMemo(() => {
+    const total = berths.length;
+    const occupied = berths.filter((x) => x.availabilityStatus === "occupied").length;
+    const upcoming = schedules.filter((x) => x.ETA && Date.parse(x.ETA) >= Date.now()).length;
+    return { total, occupied, upcoming };
+  }, [berths, schedules]);
+
   return (
-    <Box
-      component="li"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      mb="32px"
-    >
-      <Box lineHeight={1}>
-        <Typography display="block" variant="button" fontWeight="medium" color="white">
-          {date}
+    <Card>
+      <Box p={2}>
+        <Typography color="white" variant="lg" fontWeight="bold" mb="6px">
+          Quick Report
         </Typography>
-        <Typography variant="caption" fontWeight="regular" color="text">
-          {id}
-        </Typography>
+        {loading ? (
+          <Typography color="text">Loading...</Typography>
+        ) : err ? (
+          <Typography color="error">{err}</Typography>
+        ) : (
+          <>
+            <Typography color="text" variant="button" display="block" mb="6px">
+              Total Berths:{" "}
+              <Typography component="span" color="white" fontWeight="bold">
+                {summary.total}
+              </Typography>
+            </Typography>
+            <Typography color="text" variant="button" display="block" mb="6px">
+              Occupied Berths:{" "}
+              <Typography component="span" color="white" fontWeight="bold">
+                {summary.occupied}
+              </Typography>
+            </Typography>
+            <Typography color="text" variant="button" display="block" mb="6px">
+              Upcoming Arrivals:{" "}
+              <Typography component="span" color="white" fontWeight="bold">
+                {summary.upcoming}
+              </Typography>
+            </Typography>
+          </>
+        )}
       </Box>
-      <Box display="flex" alignItems="center">
-        <Typography variant="button" fontWeight="regular" color="text">
-          {price}
-        </Typography>
-        <Box display="flex" alignItems="center" lineHeight={0} ml={3} sx={{ cursor: "poiner" }}>
-          <IoDocumentText color="#fff" size="15px" />
-          <Typography variant="button" fontWeight="medium" color="text">
-            &nbsp;PDF
-          </Typography>
-        </Box>
-      </Box>
-    </Box>
+    </Card>
   );
 }
 
-// Setting default values for the props of Invoice
-Invoice.defaultProps = {
-  noGutter: false,
-};
-
-// Typechecking props for the Invoice
-Invoice.propTypes = {
-  date: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  price: PropTypes.string.isRequired,
-  noGutter: PropTypes.bool,
-};
-
-export default Invoice;
+export default ReportItem;

@@ -1,115 +1,139 @@
+import { useEffect, useMemo, useState } from "react";
 import Card from "@mui/material/Card";
-import Icon from "@mui/material/Icon";
+import Grid from "@mui/material/Grid";
 import Box from "components/Box";
 import Typography from "components/Typography";
-
-// Insights-like custom component reused for metric display
-import Insights from "layouts/berthInfo/components/Insights";
+import Progress from "components/Progress";
+import { api } from "utils/api";
 
 function PortPerformance() {
+  const [berths, setBerths] = useState([]);
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const data = await api.getBerths();
+        if (!mounted) return;
+        setBerths(Array.isArray(data) ? data : []);
+      } catch (e) {
+        setErr(e.message || "Failed to load performance");
+      } finally {
+        setLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const stats = useMemo(() => {
+    const total = berths.length;
+    const occupied = berths.filter((b) => b.availabilityStatus === "occupied").length;
+    const maintenance = berths.filter((b) => b.availabilityStatus === "maintenance").length;
+    const outOfOrder = berths.filter((b) => b.availabilityStatus === "out_of_order").length;
+    const available = berths.filter((b) => b.availabilityStatus === "available").length;
+    const utilizationPct = total ? Math.round((occupied / total) * 100) : 0;
+    return { total, occupied, maintenance, outOfOrder, available, utilizationPct };
+  }, [berths]);
   return (
-    <Card sx={{ height: "100%" }}>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb="18px"
-        sx={({ breakpoints }) => ({
-          [breakpoints.down("lg")]: {
-            flexDirection: "column",
-          },
-        })}
-      >
-        <Typography
-          variant="lg"
-          fontWeight="bold"
-          textTransform="capitalize"
-          color="white"
-          sx={({ breakpoints }) => ({
-            [breakpoints.only("sm")]: {
-              mb: "6px",
-            },
-          })}
-        >
-          Key Metrics
+    <Card>
+      <Box p={2} pb={0}>
+        <Typography color="white" variant="lg" fontWeight="bold">
+          Port Performance
         </Typography>
-        <Box display="flex" alignItems="flex-start">
-          <Box color="white" mr="6px" lineHeight={0}>
-            <Icon color="inherit" fontSize="small">
-              insights
-            </Icon>
-          </Box>
-          <Typography variant="button" color="text" fontWeight="regular">
-            April 2025
-          </Typography>
-        </Box>
       </Box>
+      {loading ? (
+        <Typography color="text" px={2} pb={2}>
+          Loading...
+        </Typography>
+      ) : err ? (
+        <Typography color="error" px={2} pb={2}>
+          {err}
+        </Typography>
+      ) : null}
+      <Box p={2} pt={0}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} lg={3}>
+            <Typography color="text" variant="button" fontWeight="medium" mb="6px">
+              Total Berths
+            </Typography>
+            <Typography color="white" variant="lg" fontWeight="bold" mb="8px">
+              {stats.total}
+            </Typography>
+            <Progress value={100} color="info" sx={{ background: "#2D2E5F" }} />
+          </Grid>
 
-      {/* Metrics List */}
-      <Box>
-        <Box mb={2}>
-          <Typography
-            variant="caption"
-            color="text"
-            fontWeight="medium"
-            textTransform="uppercase"
-          >
-            port performance
-          </Typography>
-        </Box>
+          <Grid item xs={12} md={6} lg={3}>
+            <Typography color="text" variant="button" fontWeight="medium" mb="6px">
+              Occupied
+            </Typography>
+            <Typography color="white" variant="lg" fontWeight="bold" mb="8px">
+              {stats.occupied}
+            </Typography>
+            <Progress
+              value={stats.total ? Math.round((stats.occupied / stats.total) * 100) : 0}
+              color="info"
+              sx={{ background: "#2D2E5F" }}
+            />
+          </Grid>
 
-        <Box
-          component="ul"
-          display="flex"
-          flexDirection="column"
-          p={0}
-          m={0}
-          sx={{ listStyle: "none" }}
-        >
-          {/* Displaying relevant key metrics */}
-          <Insights
-            color="info"
-            icon="directions_boat"
-            name="Total Ships Processed"
-            description="Number of ships handled in the current month"
-            value="42 Ships"
-          />
-          <Insights
-            color="success"
-            icon="schedule"
-            name="Average Waiting Time"
-            description="Time before berth assignment"
-            value="2.5 hrs"
-          />
-          <Insights
-            color="warning"
-            icon="hourglass_empty"
-            name="Average Turnaround Time"
-            description="Total time spent from arrival to departure"
-            value="18 hrs"
-          />
-          <Insights
-            color="error"
-            icon="report_problem"
-            name="Delays Reported"
-            description="Unexpected delays due to weather or congestion"
-            value="5 Instances"
-          />
-          <Insights
-            color="primary"
-            icon="star"
-            name="AI Recommended Assignments"
-            description="Assignments made through AI decision support"
-            value="28 Assignments"
-          />
-          <Insights
-            color="text"
-            icon="settings"
-            name="Manual Overrides"
-            description="Operator-made assignments overriding AI"
-            value="14 Assignments"
-          />
-        </Box>
+          <Grid item xs={12} md={6} lg={3}>
+            <Typography color="text" variant="button" fontWeight="medium" mb="6px">
+              Available
+            </Typography>
+            <Typography color="white" variant="lg" fontWeight="bold" mb="8px">
+              {stats.available}
+            </Typography>
+            <Progress
+              value={stats.total ? Math.round((stats.available / stats.total) * 100) : 0}
+              color="info"
+              sx={{ background: "#2D2E5F" }}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={3}>
+            <Typography color="text" variant="button" fontWeight="medium" mb="6px">
+              Utilization
+            </Typography>
+            <Typography color="white" variant="lg" fontWeight="bold" mb="8px">
+              {stats.utilizationPct}%
+            </Typography>
+            <Progress value={stats.utilizationPct} color="info" sx={{ background: "#2D2E5F" }} />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3} mt={0}>
+          <Grid item xs={12} md={6} lg={3}>
+            <Typography color="text" variant="button" fontWeight="medium" mb="6px">
+              Maintenance
+            </Typography>
+            <Typography color="white" variant="lg" fontWeight="bold" mb="8px">
+              {stats.maintenance}
+            </Typography>
+            <Progress
+              value={stats.total ? Math.round((stats.maintenance / stats.total) * 100) : 0}
+              color="info"
+              sx={{ background: "#2D2E5F" }}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={3}>
+            <Typography color="text" variant="button" fontWeight="medium" mb="6px">
+              Out of Order
+            </Typography>
+            <Typography color="white" variant="lg" fontWeight="bold" mb="8px">
+              {stats.outOfOrder}
+            </Typography>
+            <Progress
+              value={stats.total ? Math.round((stats.outOfOrder / stats.total) * 100) : 0}
+              color="info"
+              sx={{ background: "#2D2E5F" }}
+            />
+          </Grid>
+        </Grid>
       </Box>
     </Card>
   );

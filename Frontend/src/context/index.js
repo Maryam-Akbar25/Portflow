@@ -33,6 +33,12 @@ function reducer(state, action) {
     case "LAYOUT": {
       return { ...state, layout: action.value };
     }
+    case "SET_USER": {
+      return { ...state, user: action.value };
+    }
+    case "LOGOUT": {
+      return { ...state, user: null };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -49,6 +55,7 @@ function PortflowUIControllerProvider({ children }) {
     openConfigurator: false,
     direction: "ltr",
     layout: "dashboard",
+    user: null, // Will store user info including role
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -60,7 +67,9 @@ function usePortflowUIController() {
   const context = useContext(PortflowUI);
 
   if (!context) {
-    throw new Error("usePortflowUIController should be used inside the PortflowUIControllerProvider.");
+    throw new Error(
+      "usePortflowUIController should be used inside the PortflowUIControllerProvider."
+    );
   }
 
   return context;
@@ -80,6 +89,8 @@ const setFixedNavbar = (dispatch, value) => dispatch({ type: "FIXED_NAVBAR", val
 const setOpenConfigurator = (dispatch, value) => dispatch({ type: "OPEN_CONFIGURATOR", value });
 const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value });
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
+const setUser = (dispatch, value) => dispatch({ type: "SET_USER", value });
+const logout = (dispatch) => dispatch({ type: "LOGOUT" });
 
 export {
   PortflowUIControllerProvider,
@@ -92,4 +103,6 @@ export {
   setOpenConfigurator,
   setDirection,
   setLayout,
+  setUser,
+  logout,
 };

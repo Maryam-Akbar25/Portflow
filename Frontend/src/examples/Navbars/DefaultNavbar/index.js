@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import breakpoints from "assets/theme/base/breakpoints";
 
 function DefaultNavbar({ transparent, light, action }) {
+  const [mobileView, setMobileView] = useState(false);
+  const [mobileNavbar, setMobileNavbar] = useState(false);
+
   useEffect(() => {
     function displayMobileNavbar() {
       if (window.innerWidth < breakpoints.values.lg) {

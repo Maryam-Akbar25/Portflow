@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { api } from "utils/api";
 import Grid from "@mui/material/Grid";
 import { Card, LinearProgress, Stack } from "@mui/material";
 import Box from "components/Box";
@@ -25,7 +27,34 @@ import weatherImage from "assets/images/weather.png";
 function Dashboard() {
   const { gradients } = colors;
   const { cardContent } = gradients;
+  const [summary, setSummary] = useState({
+    totalShips: 0,
+    occupiedBerths: 0,
+    manualOverrides: 0,
+    aiAssignmentsMade: 0,
+  });
+  const [summaryError, setSummaryError] = useState("");
 
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      try {
+        const data = await api.getDashboardSummary();
+        if (!isMounted) return;
+        setSummary({
+          totalShips: data.totalShips ?? 0,
+          occupiedBerths: data.occupiedBerths ?? 0,
+          manualOverrides: data.manualOverrides ?? 0,
+          aiAssignmentsMade: data.aiAssignmentsMade ?? 0,
+        });
+      } catch (e) {
+        setSummaryError(e.message || "Failed to load summary");
+      }
+    })();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -35,7 +64,7 @@ function Dashboard() {
             <Grid item xs={12} md={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Total Ships", fontWeight: "regular" }}
-                count="750"
+                count={String(summary.totalShips)}
                 //percentage={{ color: "success", text: "+55%" }}
                 icon={{ color: "info", component: <IoBoat size="22px" color="white" /> }}
               />
@@ -43,7 +72,7 @@ function Dashboard() {
             <Grid item xs={12} md={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Occupied Berths" }}
-                count="540"
+                count={String(summary.occupiedBerths)}
                 //percentage={{ color: "success", text: "+3%" }}
                 icon={{ color: "info", component: <IoBoatOutline size="22px" color="white" /> }}
               />
@@ -51,7 +80,7 @@ function Dashboard() {
             <Grid item xs={12} md={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "AI Assignments Made" }}
-                count="416"
+                count={String(summary.aiAssignmentsMade)}
                 //percentage={{ color: "error", text: "-2%" }}
                 icon={{ color: "info", component: <FaRobot size="22px" color="white" /> }}
               />
@@ -59,7 +88,7 @@ function Dashboard() {
             <Grid item xs={12} md={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Mannual Overides" }}
-                count="124"
+                count={String(summary.manualOverrides)}
                 //percentage={{ color: "success", text: "+5%" }}
                 icon={{ color: "info", component: <IoMan size="20px" color="white" /> }}
               />
@@ -87,28 +116,27 @@ function Dashboard() {
                   <Typography variant="lg" color="white" fontWeight="bold" mb="5px">
                     Live Map
                   </Typography>
-                  <Box display="flex" alignItems="center" mb="40px">
-                  </Box>
+                  <Box display="flex" alignItems="center" mb="40px"></Box>
                   <Box
-                  sx={{
-                    hieght:"310px",
-                    display:"flex",
-                    justifyContent:"center",
-                    alighnItems:"center",
-                    overflow:"hidden",
-                    borderRadius:"10px",
-                  }}
-                  >
-                  <img 
-                    src={liveMapImg}
-                    alt="Live Map"
-                    style={{
-                      maxWidth:"100%",
-                      maxHeight:"100%",
-                      objectFit:"cover",
-                      borderRadius:"10px",
+                    sx={{
+                      hieght: "310px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alighnItems: "center",
+                      overflow: "hidden",
+                      borderRadius: "10px",
                     }}
-                  />
+                  >
+                    <img
+                      src={liveMapImg}
+                      alt="Live Map"
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "cover",
+                        borderRadius: "10px",
+                      }}
+                    />
                   </Box>
                 </Box>
               </Card>
@@ -133,21 +161,20 @@ function Dashboard() {
                     }}
                   >
                     <img
-                    src={weatherImage}
-                    alt="Weather Chart"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      borderRadius: "20px",
-                    }}
-                  />
+                      src={weatherImage}
+                      alt="Weather Chart"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "20px",
+                      }}
+                    />
                   </Box>
                   <Typography variant="lg" color="white" fontWeight="bold" mb="5px">
                     Live Weather Report
                   </Typography>
-                  <Box display="flex" alignItems="center" mb="40px">
-                  </Box>
+                  <Box display="flex" alignItems="center" mb="40px"></Box>
                   <Grid container spacing="50px">
                     <Grid item xs={6} md={3} lg={3}>
                       <Stack
