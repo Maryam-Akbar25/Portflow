@@ -196,6 +196,77 @@ export const api = {
   },
   // Health check
   healthCheck: () => apiCall("/health"),
+
+  // Reports CSV Downloads
+  downloadShipsCSV: async () => {
+    const response = await fetch(`${API_BASE_URL}/reports/ships/csv/`);
+    if (!response.ok) throw new Error(`Download ships CSV failed: ${response.status}`);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "all_ships_report.csv";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  },
+
+  downloadBerthsCSV: async () => {
+    const response = await fetch(`${API_BASE_URL}/reports/berths/csv/`);
+    if (!response.ok) throw new Error(`Download berths CSV failed: ${response.status}`);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "all_berths_report.csv";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  },
+
+  downloadAssignmentsCSV: async () => {
+    const response = await fetch(`${API_BASE_URL}/reports/assignments/csv/`);
+    if (!response.ok) throw new Error(`Download assignments CSV failed: ${response.status}`);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ship_to_berth_assignments_report.csv";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  },
+
+  downloadSchedulesCSV: async () => {
+    const response = await fetch(`${API_BASE_URL}/reports/schedules/csv/`);
+    if (!response.ok) throw new Error(`Download schedules CSV failed: ${response.status}`);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ship_schedules_report.csv";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  },
+
+  downloadOverridesCSV: async () => {
+    const response = await fetch(`${API_BASE_URL}/reports/overrides/csv/`);
+    if (!response.ok) throw new Error(`Download overrides CSV failed: ${response.status}`);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "manual_override_reports.csv";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  },
 };
 export const authAPI = {
   login: async (email, password) => {

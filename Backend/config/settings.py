@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'ships',
     'operations',
     'overrides', 
-    'analytics'
+    'analytics',
+    'reports'
 ]
 
 MIDDLEWARE = [

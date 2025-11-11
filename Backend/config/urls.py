@@ -14,4 +14,5 @@ urlpatterns = [
     path('api/v1/', include('operations.urls')),
     path('api/v1/', include('overrides.urls')),
     path('api/v1/', include('analytics.urls')),
+    path('api/v1/', include('reports.urls')),
 ]

@@ -12,7 +12,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import { api } from "utils/api";
 
 import Header from "layouts/Admin/components/Header";
-import PlatformSettings from "layouts/Admin/components/PlatformSettings";
+//import PlatformSettings from "layouts/Admin/components/PlatformSettings";
 import AddMember from "./components/AddMember/index";
 import AddBerth_Ship from "./components/Add_Berth_Ship";
 
@@ -249,11 +249,7 @@ function Admin() {
           </Grid>
         </Grid>
       </Box>
-      <Grid container spacing={3} mb="30px">
-        <Grid item xs={12}>
-          <PlatformSettings />
-        </Grid>
-      </Grid>
+      
       <Footer />
     </DashboardLayout>
   );
