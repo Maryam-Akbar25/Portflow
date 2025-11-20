@@ -143,102 +143,38 @@ python manage.py createsuperuser
 
 ### Method 2: Using Django Management Commands
 
-Create a management command for data seeding:
+The project includes a management command for seeding authentication data (roles and users):
 
-1. **Create management command file:**
-
-   ```
-   Backend/users/management/
-   Backend/users/management/commands/
-   Backend/users/management/commands/seed_data.py
-   ```
-
-2. **Add this code to seed_data.py:**
-
-   ```python
-   from django.core.management.base import BaseCommand
-   from django.contrib.auth.models import User
-   from ports.models import Port, Berth
-   from ships.models import Ship
-   from operations.models import Schedule
-
-   class Command(BaseCommand):
-       help = 'Seed database with sample data'
-
-       def handle(self, *args, **options):
-           # Create users
-           admin_user = User.objects.create_user(
-               username='admin',
-               email='admin@portflow.com',
-               password='admin123',
-               is_staff=True,
-               is_superuser=True
-           )
-
-           manager_user = User.objects.create_user(
-               username='manager',
-               email='manager@portflow.com',
-               password='manager123'
-           )
-
-           operator_user = User.objects.create_user(
-               username='operator',
-               email='operator@portflow.com',
-               password='operator123'
-           )
-
-           # Create ports
-           port1 = Port.objects.create(
-               name='Port of Singapore',
-               location='Singapore',
-               country='Singapore',
-               latitude=1.2966,
-               longitude=103.7764
-           )
-
-           port2 = Port.objects.create(
-               name='Port of Rotterdam',
-               location='Rotterdam',
-               country='Netherlands',
-               latitude=51.9225,
-               longitude=4.4792
-           )
-
-           # Create berths
-           for i in range(1, 6):
-               Berth.objects.create(
-                   port=port1,
-                   berth_number=f'B{i}',
-                   capacity=50000,
-                   availability_status='available'
-               )
-
-           for i in range(1, 4):
-               Berth.objects.create(
-                   port=port2,
-                   berth_number=f'R{i}',
-                   capacity=75000,
-                   availability_status='available'
-               )
-
-           # Create ships
-           ships_data = [
-               {'name': 'MV Ocean Star', 'mmsi': '123456789', 'length': 200, 'width': 30},
-               {'name': 'MV Sea Breeze', 'mmsi': '987654321', 'length': 180, 'width': 28},
-               {'name': 'MV Wind Spirit', 'mmsi': '456789123', 'length': 220, 'width': 32},
-           ]
-
-           for ship_data in ships_data:
-               Ship.objects.create(**ship_data)
-
-           self.stdout.write(
-               self.style.SUCCESS('Successfully seeded database with sample data')
-           )
-   ```
-
-3. **Run the command:**
+1. **Run the seed command:**
    ```bash
-   python manage.py seed_data
+   python manage.py seed_auth_data
+   ```
+
+   This command will:
+   - Create three roles: Admin, Manager, Operator
+   - Create three sample users:
+     - `admin` / `admin123` (Admin role)
+     - `manager` / `manager123` (Manager role)
+     - `operator` / `operator123` (Operator role)
+
+2. **For additional data** (ports, berths, ships), use the Django Admin panel or create additional management commands following the same pattern.
+
+   Example structure for creating ports and berths:
+   ```python
+   from ports.models import Port, Berth
+   
+   # Create port
+   port = Port.objects.create(
+       portName='Port of Singapore',
+       location='Singapore'
+   )
+   
+   # Create berth
+   berth = Berth.objects.create(
+       port=port,
+       berthName='Berth 1',
+       availabilityStatus='available'
+   )
    ```
 
 ### Method 3: Using Fixtures
@@ -274,14 +210,20 @@ SELECT * FROM auth_user LIMIT 5;
 ### Test API Endpoints
 
 ```bash
+# Test health endpoint
+curl http://localhost:8000/api/health
+
 # Test users endpoint
-curl http://localhost:8000/api/users/
+curl http://localhost:8000/api/v1/users/
 
 # Test ports endpoint
-curl http://localhost:8000/api/ports/
+curl http://localhost:8000/api/v1/ports/
 
 # Test ships endpoint
-curl http://localhost:8000/api/ships/
+curl http://localhost:8000/api/v1/ships/
+
+# Test roles endpoint
+curl http://localhost:8000/api/v1/roles/
 ```
 
 ## 🐛 Troubleshooting

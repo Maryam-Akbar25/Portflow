@@ -8,7 +8,10 @@ PortFlow is a comprehensive port management system designed to streamline port o
 - **Berth Allocation**: Efficient berth scheduling and management
 - **Ship Tracking**: Monitor ship arrivals, departures, and current status
 - **User Management**: Role-based access control (Admin, Manager, Operator)
+- **Admin Panel**: Complete CRUD operations for Ships, Berths, Users, and Roles (Admin role only)
+- **Manual Override**: Override automated assignments with manual interventions
 - **Analytics Dashboard**: Real-time insights and reporting
+- **Reports & Logs**: Generate CSV reports for ships, berths, assignments, schedules, and overrides
 
 ## 📁 Project Structure
 
@@ -58,7 +61,7 @@ Portflow/
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [Frontend/LICENSE.md](Frontend/LICENSE.md) file for details.
 
 ## 👨‍💻 Team
 

@@ -22,7 +22,8 @@ class Schedule(models.Model):
         ordering = ["ETA"]
 
     def __str__(self):
-        return f"Schedule {self.scheduleId} - {self.ship.shipName}"
+        ship_name = self.ship.shipName if self.ship else "No Ship"
+        return f"Schedule {self.scheduleId} - {ship_name}"
 
 class BerthAssignment(models.Model):
     STATUS_CHOICES = [
@@ -52,4 +53,6 @@ class BerthAssignment(models.Model):
         ordering = ["ETA"]
 
     def __str__(self):
-        return f"{self.ship.shipName} → {self.berth.berthName} [{self.status}]"
+        ship_name = self.ship.shipName if self.ship else "No Ship"
+        berth_name = self.berth.berthName if self.berth else "No Berth"
+        return f"{ship_name} → {berth_name} [{self.status}]"

@@ -1,7 +1,6 @@
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 
-
 // Images
 import burceMars from "assets/images/Portflow-logo.png";
 import breakpoints from "assets/theme/base/breakpoints";
@@ -22,9 +21,6 @@ function Header() {
         : setTabsOrientation("horizontal");
     }
 
-    /** 
-     The event listener that's calling the handleTabsOrientation function when resizing the window.
-    */
     window.addEventListener("resize", handleTabsOrientation);
     handleTabsOrientation();
     return () => window.removeEventListener("resize", handleTabsOrientation);
@@ -72,13 +68,7 @@ function Header() {
               },
             })}
           >
-            <Avatar
-              src={burceMars}
-              alt="profile-image"
-              variant="rounded"
-              size="xl"
-              shadow="sm"
-            />
+            <Avatar src={burceMars} alt="profile-image" variant="rounded" size="xl" shadow="sm" />
           </Grid>
         </Grid>
       </Card>

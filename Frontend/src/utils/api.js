@@ -16,10 +16,50 @@ const apiCall = async (endpoint, options = {}) => {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+      // Handle Django REST Framework validation errors
+      if (errorData.detail) {
+        throw new Error(errorData.detail);
+      }
+      // Handle field-specific validation errors
+      const fieldErrors = Object.entries(errorData)
+        .filter(([key]) => key !== 'detail' && key !== 'non_field_errors')
+        .map(([key, value]) => {
+          const messages = Array.isArray(value) ? value : [value];
+          return `${key}: ${messages.join(', ')}`;
+        });
+      if (fieldErrors.length > 0) {
+        throw new Error(fieldErrors.join('; '));
+      }
+      // Handle non-field errors
+      if (errorData.non_field_errors) {
+        const messages = Array.isArray(errorData.non_field_errors) 
+          ? errorData.non_field_errors 
+          : [errorData.non_field_errors];
+        throw new Error(messages.join(', '));
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return await response.json();
+    // Handle 204 No Content responses (common for DELETE operations)
+    if (response.status === 204) {
+      return null; // No content to return
+    }
+
+    // Check if response has content before parsing JSON
+    const contentType = response.headers.get('content-type');
+    const text = await response.text();
+    
+    if (!text || !contentType || !contentType.includes('application/json')) {
+      return text || null;
+    }
+    
+    try {
+      return JSON.parse(text);
+    } catch (parseError) {
+      // If parsing fails, return null instead of throwing
+      console.warn(`Failed to parse JSON response for ${endpoint}:`, parseError);
+      return null;
+    }
   } catch (error) {
     console.error(`API call failed for ${endpoint}:`, error);
     throw error;
@@ -37,7 +77,7 @@ export const api = {
     }),
   updateShip: (id, data) =>
     apiCall(`/ships/${id}/`, {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify(data),
     }),
   deleteShip: (id) =>
@@ -55,7 +95,7 @@ export const api = {
     }),
   updateBerth: (id, data) =>
     apiCall(`/berths/${id}/`, {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify(data),
     }),
   deleteBerth: (id) =>
@@ -91,7 +131,7 @@ export const api = {
     }),
   updateUser: (id, data) =>
     apiCall(`/users/${id}/`, {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify(data),
     }),
   deleteUser: (id) =>
@@ -109,7 +149,7 @@ export const api = {
     }),
   updateRole: (id, data) =>
     apiCall(`/roles/${id}/`, {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify(data),
     }),
   deleteRole: (id) =>

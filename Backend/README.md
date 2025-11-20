@@ -64,42 +64,102 @@ Backend/
 ├── operations/            # Ship operations and scheduling
 ├── overrides/             # Manual override functionality
 ├── analytics/             # Analytics and reporting
+├── reports/               # Reports and CSV exports
 ├── manage.py             # Django management script
-└── db.sqlite3            # SQLite backup database
+└── requirements.txt     # Python dependencies
 ```
 
 ## 🔧 API Endpoints
 
+All API endpoints are prefixed with `/api/v1/`
+
+### Authentication
+
+- `POST /api/v1/auth/login/` - User login
+- `POST /api/v1/auth/register/` - User registration
+- `GET /api/v1/auth/roles/` - Get available roles
+
 ### Users
 
-- `GET /api/users/` - List all users
-- `POST /api/users/` - Create new user
-- `GET /api/users/{id}/` - Get user details
+- `GET /api/v1/users/` - List all users
+- `POST /api/v1/users/` - Create new user
+- `GET /api/v1/users/{id}/` - Get user details
+- `PATCH /api/v1/users/{id}/` - Update user
+- `DELETE /api/v1/users/{id}/` - Delete user
+
+### Roles
+
+- `GET /api/v1/roles/` - List all roles
+- `POST /api/v1/roles/` - Create new role
+- `GET /api/v1/roles/{id}/` - Get role details
+- `PATCH /api/v1/roles/{id}/` - Update role
+- `DELETE /api/v1/roles/{id}/` - Delete role
 
 ### Ports
 
-- `GET /api/ports/` - List all ports
-- `POST /api/ports/` - Create new port
-- `GET /api/ports/{id}/` - Get port details
-- `GET /api/berths/` - List all berths
-- `POST /api/berths/` - Create new berth
+- `GET /api/v1/ports/` - List all ports
+- `POST /api/v1/ports/` - Create new port
+- `GET /api/v1/ports/{id}/` - Get port details
+- `PUT /api/v1/ports/{id}/` - Update port
+- `DELETE /api/v1/ports/{id}/` - Delete port
+
+### Berths
+
+- `GET /api/v1/berths/` - List all berths
+- `POST /api/v1/berths/` - Create new berth
+- `GET /api/v1/berths/{id}/` - Get berth details
+- `PATCH /api/v1/berths/{id}/` - Update berth
+- `DELETE /api/v1/berths/{id}/` - Delete berth
 
 ### Ships
 
-- `GET /api/ships/` - List all ships
-- `POST /api/ships/` - Create new ship
-- `GET /api/ships/{id}/` - Get ship details
+- `GET /api/v1/ships/` - List all ships
+- `POST /api/v1/ships/` - Create new ship
+- `GET /api/v1/ships/{id}/` - Get ship details
+- `PATCH /api/v1/ships/{id}/` - Update ship
+- `DELETE /api/v1/ships/{id}/` - Delete ship
 
 ### Operations
 
-- `GET /api/schedules/` - List all schedules
-- `POST /api/schedules/` - Create new schedule
-- `GET /api/schedules/{id}/` - Get schedule details
+- `GET /api/v1/schedules/` - List all schedules
+- `POST /api/v1/schedules/` - Create new schedule
+- `GET /api/v1/schedules/{id}/` - Get schedule details
+- `PUT /api/v1/schedules/{id}/` - Update schedule
+- `DELETE /api/v1/schedules/{id}/` - Delete schedule
+
+### Assignments
+
+- `GET /api/v1/assignments/` - List all berth assignments
+- `POST /api/v1/assignments/` - Create new assignment
+- `GET /api/v1/assignments/{id}/` - Get assignment details
+- `PUT /api/v1/assignments/{id}/` - Update assignment
+- `DELETE /api/v1/assignments/{id}/` - Delete assignment
+
+### Overrides
+
+- `GET /api/v1/override-logs/` - List all override logs
+- `POST /api/v1/override-logs/` - Create new override log
+- `GET /api/v1/override-logs/{id}/` - Get override log details
+- `PUT /api/v1/override-logs/{id}/` - Update override log
+- `DELETE /api/v1/override-logs/{id}/` - Delete override log
 
 ### Analytics
 
-- `GET /api/analytics/` - Get analytics data
-- `GET /api/reports/` - Generate reports
+- `GET /api/v1/ai-engines/` - List all AI engines
+- `GET /api/v1/historical-data/` - List historical data
+- `GET /api/v1/summary/` - Get dashboard summary
+
+### Reports
+
+- `GET /api/v1/reports/ships/csv/` - Export ships as CSV
+- `GET /api/v1/reports/berths/csv/` - Export berths as CSV
+- `GET /api/v1/reports/assignments/csv/` - Export assignments as CSV
+- `GET /api/v1/reports/schedules/csv/` - Export schedules as CSV
+- `GET /api/v1/reports/overrides/csv/` - Export overrides as CSV
+
+### Health Check
+
+- `GET /api/health` - API health check
 
 ## 🛠️ Development Commands
 
@@ -115,8 +175,8 @@ python manage.py migrate
 # Create superuser
 python manage.py createsuperuser
 
-# Load sample data
-python manage.py loaddata sample_data.json
+# Seed authentication data (roles and users)
+python manage.py seed_auth_data
 ```
 
 ### Testing
@@ -139,13 +199,17 @@ python manage.py test ports
 
 ### Core Models
 
-- **User**: System users (Admin, Manager, Operator)
+- **Role**: User roles (Admin, Manager, Operator) with descriptions
+- **User**: System users with role-based access control
 - **Port**: Port information and configuration
-- **Berth**: Individual berth details within ports
-- **Ship**: Ship information and specifications
-- **Schedule**: Ship arrival/departure scheduling
-- **Override**: Manual override records
-- **Analytics**: Performance metrics and reports
+- **Berth**: Individual berth details within ports (length, width, capacity, availability status)
+- **Ship**: Ship information and specifications (MMSI, dimensions, cargo type, priority)
+- **Schedule**: Ship arrival/departure scheduling (ETA, ATA, ETD, ATD)
+- **BerthAssignment**: Ship to berth assignments with status tracking
+- **ManualOverrideLogs**: Manual override records with timestamps and reasons
+- **HistoricalData**: Historical performance data for analytics
+- **AIEngine**: AI model configurations and training data
+- **Dashboard**: User-specific dashboard configurations
 
 ## 🌐 CORS Configuration
 
@@ -154,19 +218,18 @@ The API is configured to accept requests from:
 - `http://localhost:3000` (React development server)
 - `http://127.0.0.1:3000`
 
-## 📝 Environment Variables
+## 📝 Configuration
 
-Create a `.env` file in the Backend directory:
+Database configuration is currently set in `config/settings.py`. The default configuration uses:
 
-```env
-SECRET_KEY=your-secret-key-here
-DEBUG=True
-DB_NAME=portflow
-DB_USER=portflow_user
-DB_PASSWORD=your-password
-DB_HOST=localhost
-DB_PORT=5432
-```
+- **Database**: PostgreSQL
+- **Database Name**: `portflow`
+- **Database User**: `portflow_user`
+- **Database Password**: `123456` (change in production)
+- **Database Host**: `localhost`
+- **Database Port**: `5432`
+
+> **Note**: For production, consider using environment variables or Django's `python-decouple` package to manage sensitive configuration.
 
 ## 🐛 Troubleshooting
 

@@ -25,15 +25,7 @@ This is the frontend application for PortFlow, built with React.js and modern we
    yarn install
    ```
 
-3. **Environment Setup**
-   Create a `.env` file in the Frontend directory:
-   ```env
-   REACT_APP_API_URL=http://localhost:8000
-   REACT_APP_NAME=PortFlow
-   REACT_APP_VERSION=1.0.0
-   ```
-
-4. **Start the development server**
+3. **Start the development server**
    ```bash
    npm start
    # or
@@ -47,33 +39,37 @@ This is the frontend application for PortFlow, built with React.js and modern we
 - `npm test` - Run tests
 - `npm run build` - Build for production
 - `npm run eject` - Eject from create-react-app (irreversible)
+- `npm run install:clean` - Clean install (removes node_modules and reinstalls)
 
 ## 📁 Project Structure
 
 ```
 Frontend/
-├── public/              # Static files
+├── public/              # Static files (favicon, manifest, etc.)
 ├── src/
-│   ├── assets/          # Images, fonts, etc.
-│   ├── components/      # Reusable UI components
-│   ├── layouts/         # Layout components
-│   ├── pages/           # Page components
-│   ├── services/        # API services
-│   ├── store/           # State management
-│   ├── utils/           # Utility functions
+│   ├── assets/          # Images, theme files, fonts
+│   │   ├── images/     # Image assets
+│   │   └── theme/       # Material-UI theme configuration
+│   ├── components/      # Reusable UI components (Alert, Avatar, Button, etc.)
+│   ├── context/         # React Context API for state management
+│   ├── examples/        # Example components (Cards, Charts, Navbars, etc.)
+│   ├── layouts/         # Layout components (Dashboard, Admin, Reports, etc.)
+│   ├── utils/           # Utility functions (API calls, helpers)
+│   ├── variables/       # Chart variables and configurations
 │   ├── App.js           # Main App component
+│   ├── routes.js        # Route configuration
 │   └── index.js         # Entry point
-├── .env                 # Environment variables
 └── package.json         # Dependencies and scripts
 ```
 
-## 🌐 Environment Variables
+## 🌐 API Configuration
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `REACT_APP_API_URL` | Backend API URL | `http://localhost:8000` |
-| `REACT_APP_NAME` | Application name | `PortFlow` |
-| `REACT_APP_VERSION` | Application version | `1.0.0` |
+The API base URL is configured in `src/utils/api.js` and is currently set to:
+- **API Base URL**: `http://127.0.0.1:8000/api/v1`
+
+To change the API URL, modify the `API_BASE_URL` constant in `src/utils/api.js`.
+
+> **Note**: For production, consider using environment variables or a configuration file.
 
 ## 🧪 Testing
 
@@ -97,14 +93,24 @@ This will create a `build` directory with optimized production build.
 
 ## 📦 Dependencies
 
-- React 18
-- React Router DOM
-- Axios
-- Redux Toolkit
-- Material-UI (MUI)
-- React Icons
-- Formik & Yup (Form handling)
-- Chart.js (Data visualization)
+### Core
+- **React** 18.2.0 - UI library
+- **React Router DOM** 7.6.0 - Routing
+- **React DOM** 18.2.0 - React rendering
+
+### UI Framework
+- **Material-UI (MUI)** 5.9.2 - Component library
+- **@emotion/react** & **@emotion/styled** - CSS-in-JS styling
+- **React Icons** 4.3.1 - Icon library
+
+### Data Visualization
+- **ApexCharts** 3.30.0 - Chart library
+- **React ApexCharts** 1.3.9 - React wrapper for ApexCharts
+
+### Utilities
+- **chroma-js** 2.1.2 - Color manipulation
+- **react-flatpickr** 3.10.7 - Date picker
+- **uuid** 8.3.2 - Unique ID generation
 
 ## 🤝 Contributing
 

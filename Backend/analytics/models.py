@@ -30,4 +30,5 @@ class HistoricalData(models.Model):
         ]
 
     def __str__(self):
-        return f"Hist {self.dataId} - {self.ship.shipName}"
+        ship_name = self.ship.shipName if self.ship else "No Ship"
+        return f"Hist {self.dataId} - {ship_name}"
