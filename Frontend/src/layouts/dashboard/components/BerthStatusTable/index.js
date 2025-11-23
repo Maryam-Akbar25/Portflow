@@ -34,7 +34,16 @@ function getStatusBox(status) {
     <Typography
       variant="button"
       fontWeight="bold"
-      sx={{ color, display: "flex", alignItems: "center" }}
+      sx={{ 
+        color, 
+        display: "flex", 
+        alignItems: "center",
+        fontSize: '1.1rem !important',
+        '& .MuiSvgIcon-root': {
+          fontSize: '1.2rem',
+          marginRight: '4px'
+        }
+      }}
     >
       {emoji} {label}
     </Typography>
@@ -56,7 +65,7 @@ function BerthStatusTable() {
         const mappedRows = berths.map((b) => ({
           BerthName_Number: (
             <Box display="flex" alignItems="center">
-              <Typography pl="16px" color="white" variant="button" fontWeight="medium">
+              <Typography pl="16px" color="white" variant="button" fontWeight="medium" sx={{ fontSize: '1.1rem' }}>
                 {b.berthName}
               </Typography>
             </Box>
@@ -80,7 +89,7 @@ function BerthStatusTable() {
     <Card sx={{ height: "100% !important" }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb="32px">
         <Box mb="auto">
-          <Typography color="white" variant="lg" mb="6px" gutterBottom>
+          <Typography color="white" variant="h5" mb="6px" gutterBottom sx={{ fontSize: '1.5rem !important' }}>
             Berth Status Table
           </Typography>
         </Box>
@@ -100,12 +109,31 @@ function BerthStatusTable() {
             "& th": {
               borderBottom: ({ borders: { borderWidth }, palette: { grey } }) =>
                 `${borderWidth[1]} solid ${grey[700]}`,
+              '& .MuiTypography-root': {
+                fontSize: '1.2rem !important',
+                fontWeight: '600 !important',
+                color: 'white !important',
+                textTransform: 'uppercase',
+              },
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              padding: '16px 24px',
             },
             "& .MuiTableRow-root:not(:last-child)": {
               "& td": {
                 borderBottom: ({ borders: { borderWidth }, palette: { grey } }) =>
                   `${borderWidth[1]} solid ${grey[700]}`,
+                padding: '14px 24px',
+                '& .MuiTypography-root': {
+                  fontSize: '1.1rem !important',
+                }
               },
+            },
+            '& .MuiTableHead-root': {
+              '& .MuiTableRow-root': {
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.03)'
+                }
+              }
             },
           }}
         >

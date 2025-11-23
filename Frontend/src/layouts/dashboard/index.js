@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { api } from "utils/api";
 import Grid from "@mui/material/Grid";
 import { Card, LinearProgress, Stack } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import Box from "components/Box";
 import Typography from "components/Typography";
 import Progress from "components/Progress";
@@ -11,6 +13,7 @@ import Footer from "examples/Footer";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
 import linearGradient from "assets/theme/functions/linearGradient";
 import colors from "assets/theme/base/colors";
+import theme from "assets/theme";
 
 // Dashboard layout components
 import BerthStatusTable from "layouts/dashboard/components/BerthStatusTable";
@@ -23,6 +26,36 @@ import { FaRobot } from "react-icons/fa";
 import liveMapImg from "assets/images/LiveMap.jpg";
 import WelcomePortFLow from "./components/WelcomeMark";
 import weatherImage from "assets/images/weather.png";
+
+// Extend the existing theme
+const extendedTheme = createTheme(theme, {
+  typography: {
+    ...theme.typography,
+    h1: { fontSize: '2.5rem', fontWeight: 600 },
+    h2: { fontSize: '2rem', fontWeight: 600 },
+    h3: { fontSize: '1.75rem', fontWeight: 600 },
+    h4: { fontSize: '1.5rem', fontWeight: 600 },
+    h5: { fontSize: '1.25rem', fontWeight: 600 },
+    h6: { fontSize: '1.1rem', fontWeight: 600 },
+    body1: { fontSize: '1.1rem' },
+    body2: { fontSize: '1rem' },
+    button: { fontSize: '1rem', textTransform: 'none' },
+  },
+  components: {
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          fontSize: '1.1rem',
+          padding: '12px 16px',
+        },
+        head: {
+          fontWeight: 600,
+          fontSize: '1.1rem',
+        },
+      },
+    },
+  }
+});
 
 function Dashboard() {
   const { gradients } = colors;
@@ -56,8 +89,10 @@ function Dashboard() {
     };
   }, []);
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
+    <ThemeProvider theme={extendedTheme}>
+      <CssBaseline />
+      <DashboardLayout>
+        <DashboardNavbar />
       <Box py={3}>
         <Box mb={3}>
           <Grid container spacing={3}>
@@ -252,7 +287,8 @@ function Dashboard() {
         </Grid>
       </Box>
       <Footer />
-    </DashboardLayout>
+      </DashboardLayout>
+    </ThemeProvider>
   );
 }
 

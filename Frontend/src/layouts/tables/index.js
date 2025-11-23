@@ -146,15 +146,42 @@ function Tables() {
 
             <Box
               sx={{
-                "& th": {
+                '& .MuiTableCell-root': {
+                  padding: '16px 24px',
+                },
+                '& th': {
                   borderBottom: ({ borders: { borderWidth }, palette: { grey } }) =>
                     `${borderWidth[1]} solid ${grey[700]}`,
+                  '& .MuiTypography-root': {
+                    color: 'white !important',
+                    fontWeight: 'bold !important',
+                    fontSize: '1.2rem !important',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                  },
+                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                  padding: '16px 24px',
                 },
-                "& .MuiTableRow-root:not(:last-child)": {
-                  "& td": {
+                '& td': {
+                  '& .MuiTypography-root': {
+                    fontSize: '1.1rem !important',
+                    color: 'rgba(255, 255, 255, 0.9) !important',
+                  },
+                },
+                '& .MuiTableRow-root:not(:last-child)': {
+                  '& td': {
                     borderBottom: ({ borders: { borderWidth }, palette: { grey } }) =>
                       `${borderWidth[1]} solid ${grey[700]}`,
+                    padding: '14px 24px',
+                    fontSize: '1.1rem',
                   },
+                },
+                '& .MuiTableHead-root': {
+                  '& .MuiTableRow-root': {
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.03)'
+                    }
+                  }
                 },
               }}
             >

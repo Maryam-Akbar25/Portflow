@@ -94,28 +94,27 @@ const collapseIcon = ({ palette: { white, gradients } }, { active }) => ({
 
 function collapseText(theme, ownerState) {
   const { typography, transitions, breakpoints, functions } = theme;
-  const { miniSidenav, active } = ownerState;
+  const { miniSidenav, transparentSidenav, active } = ownerState;
 
-  const { size, fontWeightMedium, fontWeightRegular } = typography;
+  const { size, fontWeightRegular, fontWeightLight } = typography;
   const { pxToRem } = functions;
 
   return {
-    marginLeft: pxToRem(12.8),
-
-    [breakpoints.up("xl")]: {
-      opacity: miniSidenav || miniSidenav ? 0 : 1,
-      maxWidth: miniSidenav || miniSidenav ? 0 : "100%",
-      marginLeft: miniSidenav || miniSidenav ? 0 : pxToRem(12.8),
-      transition: transitions.create(["opacity", "margin"], {
+    marginLeft: pxToRem(12),
+    [breakpoints.up('xl')]: {
+      opacity: miniSidenav || (miniSidenav && transparentSidenav) ? 0 : 1,
+      maxWidth: miniSidenav || (miniSidenav && transparentSidenav) ? 0 : '100%',
+      marginLeft: miniSidenav || (miniSidenav && transparentSidenav) ? 0 : pxToRem(12),
+      transition: transitions.create(['opacity', 'margin'], {
         easing: transitions.easing.easeInOut,
         duration: transitions.duration.standard,
       }),
     },
-
-    "& span": {
-      fontWeight: active ? fontWeightMedium : fontWeightRegular,
-      fontSize: size.sm,
-      lineHeight: 0,
+    '& span': {
+      fontWeight: active ? 600 : 500,
+      fontSize: '1rem',
+      lineHeight: 1.5,
+      color: 'white',
     },
   };
 }

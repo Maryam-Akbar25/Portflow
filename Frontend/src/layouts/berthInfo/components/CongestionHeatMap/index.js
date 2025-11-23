@@ -23,10 +23,10 @@ function CongestionHeatMap() {
   const zoneLabels = ["Zone A", "Zone B", "Zone C", "Zone D", "Zone E"];
 
   return (
-    <Card id="congestion-heatmap" sx={{ padding: "20px" }}>
+    <Card id="congestion-heatmap" sx={{ p: 3 }}>
       {/* Title */}
       <Box mb={3}>
-        <Typography variant="lg" fontWeight="bold" color="white">
+        <Typography variant="h5" fontWeight="bold" color="white" fontSize="1.4rem">
           Congestion HeatMap
         </Typography>
       </Box>
@@ -38,9 +38,13 @@ function CongestionHeatMap() {
           {timeLabels.map((time, i) => (
             <Typography
               key={i}
-              variant="caption"
+              variant="button"
               color="white"
-              sx={{ width: 50, textAlign: "center" }}
+              fontSize="0.85rem"
+              sx={{ 
+                width: 50, 
+                textAlign: "center" 
+              }}
             >
               {time}
             </Typography>

@@ -121,10 +121,10 @@ const ShipTimeline = () => {
   );
 
   return (
-    <Card sx={{ padding: "30px" }}>
+    <Card sx={{ p: 3 }}>
       <Box display="flex" flexDirection="column">
         {/* Title */}
-        <Typography variant="lg" color="white" fontWeight="bold" mb="16px">
+        <Typography variant="h5" color="white" fontWeight="bold" mb={3} fontSize="1.4rem">
           Ship Timeline
         </Typography>
 
@@ -149,7 +149,7 @@ const ShipTimeline = () => {
               return (
                 <g key={i}>
                   {/* Time labels */}
-                  <text x={x} y={height + 15} fontSize="10" fill="#aaa" textAnchor="middle">
+                  <text x={x} y={height + 18} fontSize="12" fill="#aaa" textAnchor="middle" fontFamily="sans-serif">
                     {d.time}
                   </text>
 
@@ -163,20 +163,28 @@ const ShipTimeline = () => {
         </Box>
 
         {/* Legend */}
-        <Box display="flex" justifyContent="flex-start" mt={2} gap={3}>
-          <Box display="flex" alignItems="center" gap={1}>
-            <span
-              style={{ width: "12px", height: "12px", background: "#00d09c", borderRadius: "50%" }}
-            ></span>
-            <Typography color="text" variant="button">
+        <Box display="flex" justifyContent="flex-start" mt={3} gap={4}>
+          <Box display="flex" alignItems="center" gap={1.5}>
+            <Box
+              width={14}
+              height={14}
+              bgcolor="#00d09c"
+              borderRadius="50%"
+              flexShrink={0}
+            />
+            <Typography color="text" variant="button" fontSize="1rem">
               Arrivals
             </Typography>
           </Box>
-          <Box display="flex" alignItems="center" gap={1}>
-            <span
-              style={{ width: "12px", height: "12px", background: "#f96d00", borderRadius: "50%" }}
-            ></span>
-            <Typography color="text" variant="button">
+          <Box display="flex" alignItems="center" gap={1.5}>
+            <Box
+              width={14}
+              height={14}
+              bgcolor="#f96d00"
+              borderRadius="50%"
+              flexShrink={0}
+            />
+            <Typography color="text" variant="button" fontSize="1rem">
               Departures
             </Typography>
           </Box>

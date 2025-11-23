@@ -36,7 +36,12 @@ function SidenavCollapse({ color, icon, name, children, active, noCollapse, open
 
           <ListItemText
             primary={name}
-            sx={(theme) => collapseText(theme, { miniSidenav, transparentSidenav, active })}
+            sx={(theme) => ({
+              ...collapseText(theme, { miniSidenav, transparentSidenav, active }),
+              color: "white",
+              fontSize: "1.1rem",
+              fontWeight: 500,
+            })}
           />
         </Box>
       </ListItem>
@@ -62,7 +67,7 @@ SidenavCollapse.defaultProps = {
 SidenavCollapse.propTypes = {
   color: PropTypes.oneOf(["info", "success", "warning", "error", "dark"]),
   icon: PropTypes.node.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.node.isRequired,
   children: PropTypes.node,
   active: PropTypes.bool,
   noCollapse: PropTypes.bool,

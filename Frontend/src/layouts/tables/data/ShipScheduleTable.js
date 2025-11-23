@@ -1,208 +1,124 @@
+import { useState, useEffect } from 'react';
 import Box from "components/Box";
 import Typography from "components/Typography";
 import Badge from "components/Badge";
+import { api } from "utils/api";
 
-function ShipSchedule({ Ship_Name }) {
+// Helper component for ship name display
+function ShipSchedule({ shipName }) {
   return (
     <Box display="flex" alignItems="center" px={1} py={0.5}>
       <Typography variant="button" color="white" fontWeight="medium">
-        {Ship_Name}
+        {shipName || 'N/A'}
       </Typography>
     </Box>
   );
 }
 
-function Berth_Assigned({ assignedBerth }) {
+// Helper component for berth assignment display
+function BerthAssigned({ berthName }) {
   return (
     <Box display="flex" flexDirection="column">
       <Typography variant="caption" fontWeight="medium" color="white">
-        {assignedBerth}
+        {berthName || 'N/A'}
       </Typography>
     </Box>
   );
 }
 
-// Export Ship Schedule Overview Table Data
-export default {
-  columns: [
-    { name: "ShipSchedule", align: "left" }, 
-    { name: "Berth_Assigned", align: "left" },   
-    { name: "Status", align: "center" },     
-    { name: "ETA", align: "center" },        
-    { name: "ETD", align: "center" },       
-  ],
+// Helper component for status badge
+function StatusBadge({ status }) {
+  const isOnTime = status === 'on_time';
+  
+  return (
+    <Badge
+      variant="standard"
+      badgeContent={isOnTime ? 'On Time' : 'Delayed'}
+      color={isOnTime ? 'success' : 'default'}
+      size="xs"
+      container
+      sx={({ palette: { white, success }, borders: { borderRadius, borderWidth } }) => ({
+        background: isOnTime ? success.main : 'unset',
+        border: `${borderWidth[1]} solid ${isOnTime ? success.main : white.main}`,
+        borderRadius: borderRadius.md,
+        color: white.main,
+      })}
+    />
+  );
+}
 
-  rows: [
-    {
-      ShipSchedule: <ShipSchedule Ship_Name="Alpha" />,
-      Berth_Assigned: <Berth_Assigned assignedBerth="Berth 1" />, 
-      Status: (
-        <Badge
-          variant="standard"
-          badgeContent="On Time" // Status
-          color="success"
-          size="xs"
-          container
-          sx={({ palette: { white, success }, borders: { borderRadius, borderWidth } }) => ({
-            background: success.main,
-            border: `${borderWidth[1]} solid ${success.main}`,
-            borderRadius: borderRadius.md,
-            color: white.main,
-          })}
-        />
-      ),
-      ETA: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          10:00 AM
-        </Typography>
-      ),
-      ETD: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          6:00 PM
-        </Typography>
-      ),
-    },
-    {
-      ShipSchedule: <ShipSchedule Ship_Name="BETA" />,
-      Berth_Assigned: <Berth_Assigned assignedBerth="Berth 3" />,
-      Status: (
-        <Badge
-          variant="standard"
-          badgeContent="Delayed"
-          size="xs"
-          container
-          sx={({ palette: { white }, borders: { borderRadius, borderWidth } }) => ({
-            background: "unset",
-            border: `${borderWidth[1]} solid ${white.main}`,
-            borderRadius: borderRadius.md,
-            color: white.main,
-          })}
-        />
-      ),
-      ETA: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          11:30 AM
-        </Typography>
-      ),
-      ETD: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          7:30 PM
-        </Typography>
-      ),
-    },
-    {
-      ShipSchedule: <ShipSchedule Ship_Name="Omricon" />,
-      Berth_Assigned: <Berth_Assigned assignedBerth="Berth 4" />,
-      Status: (
-        <Badge
-          variant="standard"
-          badgeContent="On Time"
-          color="success"
-          size="xs"
-          container
-          sx={({ palette: { white, success }, borders: { borderRadius, borderWidth } }) => ({
-            background: success.main,
-            border: `${borderWidth[1]} solid ${success.main}`,
-            borderRadius: borderRadius.md,
-            color: white.main,
-          })}
-        />
-      ),
-      ETA: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          9:45 AM
-        </Typography>
-      ),
-      ETD: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          10:00 PM
-        </Typography>
-      ),
-    },
-    {
-      ShipSchedule: <ShipSchedule Ship_Name="Delta" />,
-      Berth_Assigned: <Berth_Assigned assignedBerth="Berth 6" />,
-      Status: (
-        <Badge
-          variant="standard"
-          badgeContent="On Time"
-          color="success"
-          size="xs"
-          container
-          sx={({ palette: { white, success }, borders: { borderRadius, borderWidth } }) => ({
-            background: success.main,
-            border: `${borderWidth[1]} solid ${success.main}`,
-            borderRadius: borderRadius.md,
-            color: white.main,
-          })}
-        />
-      ),
-      ETA: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          8:00 AM
-        </Typography>
-      ),
-      ETD: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          11:00 PM
-        </Typography>
-      ),
-    },
-    {
-      ShipSchedule: <ShipSchedule Ship_Name="Gamma" />,
-      Berth_Assigned: <Berth_Assigned assignedBerth="Berth 2" />,
-      Status: (
-        <Badge
-          variant="standard"
-          badgeContent="Delayed"
-          size="xs"
-          container
-          sx={({ palette: { white }, borders: { borderRadius, borderWidth } }) => ({
-            background: "unset",
-            border: `${borderWidth[1]} solid ${white.main}`,
-            borderRadius: borderRadius.md,
-            color: white.main,
-          })}
-        />
-      ),
-      ETA: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          4:00 AM
-        </Typography>
-      ),
-      ETD: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          1:00 PM
-        </Typography>
-      ),
-    },
-    {
-      ShipSchedule: <ShipSchedule Ship_Name="Hexa Marine" />,
-      Berth_Assigned: <Berth_Assigned assignedBerth="Berth 5" />,
-      Status: (
-        <Badge
-          variant="standard"
-          badgeContent="Delayed"
-          size="xs"
-          container
-          sx={({ palette: { white }, borders: { borderRadius, borderWidth } }) => ({
-            background: "unset",
-            border: `${borderWidth[1]} solid ${white.main}`,
-            borderRadius: borderRadius.md,
-            color: white.main,
-          })}
-        />
-      ),
-      ETA: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          2:00 PM
-        </Typography>
-      ),
-      ETD: (
-        <Typography variant="caption" color="white" fontWeight="medium">
-          10:00 PM
-        </Typography>
-      ),
-    },
-  ],
+// Format time to HH:MM AM/PM
+const formatTime = (dateString) => {
+  if (!dateString) return 'N/A';
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  } catch (e) {
+    console.error('Error formatting date:', e);
+    return 'N/A';
+  }
 };
+
+// Custom hook to fetch and manage ship schedule data
+export default function useShipScheduleData() {
+  const [schedules, setSchedules] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchSchedules = async () => {
+    try {
+      setLoading(true);
+      const data = await api.getSchedules();
+      setSchedules(Array.isArray(data) ? data : []);
+      setError(null);
+    } catch (err) {
+      console.error('Failed to fetch schedules:', err);
+      setError(err.message || 'Failed to load ship schedules');
+      setSchedules([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
+
+  // Define table columns
+  const columns = [
+    { name: 'ShipSchedule', align: 'left' },
+    { name: 'Berth_Assigned', align: 'left' },
+    { name: 'Status', align: 'center' },
+    { name: 'ETA', align: 'center' },
+    { name: 'ETD', align: 'center' },
+  ];
+
+  // Transform API data to table rows
+  const rows = schedules.map((schedule) => ({
+    ShipSchedule: <ShipSchedule shipName={schedule.shipName} />,
+    Berth_Assigned: <BerthAssigned berthName={schedule.berthName} />,
+    Status: <StatusBadge status={schedule.status} />,
+    ETA: (
+      <Typography variant="caption" color="white" fontWeight="medium">
+        {formatTime(schedule.eta)}
+      </Typography>
+    ),
+    ETD: (
+      <Typography variant="caption" color="white" fontWeight="medium">
+        {formatTime(schedule.etd)}
+      </Typography>
+    ),
+  }));
+
+  return {
+    columns,
+    rows,
+    loading,
+    error,
+    refetch: fetchSchedules,
+  };
+}

@@ -16,21 +16,34 @@ function berthInfo() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <Box mt={4}>
+      <Box 
+        mt={4}
+        sx={{
+          '& .MuiTypography-root': {
+            fontSize: '1.1rem !important',
+          },
+          '& .MuiCard-root': {
+            '& .MuiTypography-root': {
+              fontSize: '1.1rem !important',
+            },
+            '& .MuiButton-root': {
+              fontSize: '1rem !important',
+            },
+          },
+        }}
+      >
         <Box mb={1.5}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <MasterCard number={7812213908237916} valid="05/24" cvv="09X" />
-            </Grid>
-            <Grid item xs={12}>
-              <ShipTimeline />
-            </Grid>
-            <Grid item xs={12}>
-              <CongestionHM />
+              <PortPerformance />
             </Grid>
             <Grid item xs={12}>
               <ReportItem />
             </Grid>
+            <Grid item xs={12}>
+              <ShipTimeline />
+            </Grid>
+            
           </Grid>
         </Box>
         <Box my={3}>
@@ -39,7 +52,10 @@ function berthInfo() {
               <BerthAllocationInfo />
             </Grid>
             <Grid item xs={12}>
-              <PortPerformance />
+              <CongestionHM />
+            </Grid>
+            <Grid item xs={12}>
+              <MasterCard number={7812213908237916} valid="05/24" cvv="09X" />
             </Grid>
           </Grid>
         </Box>

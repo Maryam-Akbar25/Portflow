@@ -25,7 +25,22 @@ function Sidenav({ color, brandName, routes, ...rest }) {
   const { miniSidenav, transparentSidenav } = controller;
   const location = useLocation();
   const { pathname } = location;
-  const collapseName = pathname.split("/").slice(1)[0];
+  
+  // Get the current route segments
+  const pathSegments = pathname.split('/').filter(Boolean);
+  // Get the first two segments for better matching
+  const currentRoute = pathSegments.length > 1 
+    ? `${pathSegments[0]}/${pathSegments[1]}` 
+    : pathSegments[0] || 'dashboard';
+  
+  // Function to check if a route should be active
+  const isActive = (route, key) => {
+    if (!route) return false;
+    // If it's the dashboard and we're at the root
+    if (route === '/dashboard' && pathname === '/') return true;
+    // Check if the current path starts with the route
+    return pathname.startsWith(route) || key === pathSegments[0];
+  };
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
@@ -66,7 +81,7 @@ function Sidenav({ color, brandName, routes, ...rest }) {
             color={color}
             name={name}
             icon={icon}
-            active={key === collapseName}
+            active={isActive(route, key)}
             noCollapse={noCollapse}
           />
         </Link>
@@ -77,7 +92,7 @@ function Sidenav({ color, brandName, routes, ...rest }) {
             key={key}
             name={name}
             icon={icon}
-            active={key === collapseName}
+            active={isActive(route, key)}
             noCollapse={noCollapse}
           />
         </NavLink>

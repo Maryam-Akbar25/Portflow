@@ -437,7 +437,7 @@ const DataTables = () => {
       currentConfig.columns.forEach((column) => {
         const rendered = renderCellValue(activeEntity, row, column);
         rowData[column.label] = (
-          <Typography variant="button" color="white" fontWeight="medium">
+          <Typography variant="body1" color="white !important" fontWeight="medium" sx={{ fontSize: '1.05rem', color: 'white !important' }}>
             {rendered}
           </Typography>
         );
@@ -447,7 +447,7 @@ const DataTables = () => {
           <Tooltip title="Edit record">
             <span>
               <IconButton
-                size="small"
+                size="medium"
                 color="primary"
                 onClick={() => openEditDialog(activeEntity, row)}
                 disabled={actionLoading}
@@ -459,7 +459,7 @@ const DataTables = () => {
           <Tooltip title="Delete record">
             <span>
               <IconButton
-                size="small"
+                size="medium"
                 color="error"
                 onClick={() => handleDelete(activeEntity, row)}
                 disabled={actionLoading}
@@ -475,9 +475,78 @@ const DataTables = () => {
   }, [entityRows, currentConfig, activeEntity, actionLoading]);
 
   return (
-    <Card sx={{ p: 3, mt: 4, position: "relative" }}>
+    <Card sx={{ 
+      p: 3, 
+      mt: 4, 
+      position: "relative",
+      color: 'white',
+      '& *': {
+        color: 'white !important',
+      },
+      '& .MuiTypography-root': {
+        color: 'white !important',
+      },
+      '& .MuiTableHead-root .MuiTableCell-root': {
+        color: 'white',
+        fontSize: '1.3rem',
+        fontWeight: 700,
+        padding: '16px',
+        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+        borderBottom: '2px solid rgba(255, 255, 255, 0.2)',
+      },
+      '& .MuiTableCell-root': {
+        color: 'white',
+        fontSize: '1rem',
+        borderColor: 'rgba(255, 255, 255, 0.1)',
+      },
+      '& .MuiInputBase-root': {
+        color: 'white',
+        '& .MuiOutlinedInput-notchedOutline': {
+          borderColor: 'rgba(255, 255, 255, 0.3)',
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+          borderColor: 'rgba(255, 255, 255, 0.5)',
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          borderColor: 'white',
+        },
+        '& .MuiInputLabel-root': {
+          color: 'rgba(255, 255, 255, 0.7)',
+        },
+        '&.Mui-focused .MuiInputLabel-root': {
+          color: 'white',
+        },
+      },
+      '& .MuiSvgIcon-root': {
+        color: 'white',
+      },
+      '& .MuiButton-text': {
+        color: 'white',
+        '&:hover': {
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        },
+      },
+    }}>
       <Box
-        sx={{ position: "relative", mb: 3, minHeight: 40, display: "flex", alignItems: "center" }}
+        sx={{ 
+          position: "relative", 
+          mb: 3, 
+          minHeight: 40, 
+          display: "flex", 
+          alignItems: "center",
+          '& .MuiButton-root': {
+            fontSize: '1rem',
+            color: 'white',
+            '&:hover': {
+              color: 'white',
+            }
+          },
+          '& .MuiButton-contained': {
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            }
+          }
+        }}
       >
         <Box sx={{ position: "absolute", left: 0 }}>
           <Button
@@ -530,7 +599,7 @@ const DataTables = () => {
           <CircularProgress />
         </Box>
       ) : entityRows.length === 0 ? (
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body1" color="white">
           No records available for {ENTITY_ORDER.find((item) => item.key === activeEntity)?.label}.
         </Typography>
       ) : (
@@ -552,7 +621,38 @@ const DataTables = () => {
         </Box>
       )}
 
-      <Dialog open={editState.open} onClose={closeEditDialog} fullWidth maxWidth="sm">
+      <Dialog 
+        open={editState.open} 
+        onClose={closeEditDialog} 
+        fullWidth 
+        maxWidth="sm"
+        PaperProps={{
+          sx: {
+            background: 'linear-gradient(195deg, #1a1a2e 0%, #16213e 100%)',
+            color: 'white !important',
+            '& *': {
+              color: 'white !important',
+            },
+            '& .MuiDialogTitle-root': {
+              color: 'white !important',
+              fontSize: '1.25rem',
+              fontWeight: 'bold',
+            },
+            '& .MuiDialogContentText-root': {
+              color: 'white !important',
+            },
+            '& .MuiInputBase-input': {
+              color: 'white !important',
+            },
+            '& .MuiInputLabel-root': {
+              color: 'rgba(255, 255, 255, 0.7) !important',
+              '&.Mui-focused': {
+                color: 'white !important',
+              }
+            },
+          },
+        }}
+      >
         <DialogTitle>
           {editState.mode === "add" ? "Add" : "Edit"}{" "}
           {ENTITY_ORDER.find((item) => item.key === editState.entity)?.singular}
