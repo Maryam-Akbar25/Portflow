@@ -1,12 +1,12 @@
 import Grid from "@mui/material/Grid";
 import Box from "components/Box";
-import MasterCard from "examples/Cards/MasterCard";
+//import MasterCard from "examples/Cards/MasterCard";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 // BerthInfo page components
-import CongestionHM from "layouts/berthInfo/components/CongestionHeatMap";
+//import CongestionHM from "layouts/berthInfo/components/CongestionHeatMap";
 import ReportItem  from "layouts/berthInfo/components/ReportItem";
 import BerthAllocationInfo from "layouts/berthInfo/components/BerthAllocationInfo";
 import ShipTimeline from "./components/ShipTimeline";
@@ -51,12 +51,12 @@ function berthInfo() {
             <Grid item xs={12}>
               <BerthAllocationInfo />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <CongestionHM />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid> */}
+            {/* <Grid item xs={12}>
               <MasterCard number={7812213908237916} valid="05/24" cvv="09X" />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
       </Box>
