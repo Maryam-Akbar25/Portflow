@@ -234,6 +234,28 @@ export const api = {
     if (!res.ok) throw new Error(`Create override log failed: ${res.status}`);
     return res.json();
   },
+  getOptimizeData: async () => {
+    const res = await fetch(`${API_BASE_URL}/optimize/data/`);
+    if (!res.ok) throw new Error(`Optimize data request failed: ${res.status}`);
+    return res.json();
+  },
+  getPredictions: async () => {
+    const res = await fetch(`${API_BASE_URL}/optimize/predict/`);
+    if (!res.ok) throw new Error(`Prediction request failed: ${res.status}`);
+    return res.json();
+  },
+  downloadPredictionsCSV: async () => {
+    const res = await fetch(`${API_BASE_URL}/optimize/download/`);
+    if (!res.ok) throw new Error(`Download failed: ${res.status}`);
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ai_allocations_report.csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  },
   // Health check
   healthCheck: () => apiCall("/health"),
 

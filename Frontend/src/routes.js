@@ -5,8 +5,9 @@ import BerthInfo from "layouts/berthInfo";
 import Admin from "layouts/Admin";
 import SignIn from "layouts/authentication/sign-in";
 import Reports from "layouts/reports";
+import OptimizeAllocations from "layouts/optimizeAllocations";
 import ProtectedRoute from "components/ProtectedRoute";
-import { IoBoat } from "react-icons/io5";
+import { IoBoat, IoRocket } from "react-icons/io5";
 import { IoIosDocument } from "react-icons/io";
 import { BsFillPersonFill } from "react-icons/bs";
 import { BsFillTabletFill } from "react-icons/bs";
@@ -42,6 +43,15 @@ const getRoutes = (userRole) => {
       route: "/BerthUtilization",
       icon: <BsFillTabletFill size="15px" color="inherit" />,
       component: <BerthInfo />,
+      noCollapse: true,
+    },
+    {
+      type: "collapse",
+      name: "Optimize Allocations",
+      key: "optimize-allocations",
+      route: "/optimize-allocations",
+      icon: <IoRocket size="15px" color="inherit" />,
+      component: <OptimizeAllocations />,
       noCollapse: true,
     },
     {
@@ -105,3 +115,5 @@ const routes = getRoutes(null);
 
 export { getRoutes };
 export default routes;
+
+

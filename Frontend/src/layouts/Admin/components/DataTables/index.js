@@ -629,26 +629,73 @@ const DataTables = () => {
         PaperProps={{
           sx: {
             background: 'linear-gradient(195deg, #1a1a2e 0%, #16213e 100%)',
-            color: 'white !important',
-            '& *': {
-              color: 'white !important',
-            },
+            color: 'white',
+            borderRadius: 3,
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
             '& .MuiDialogTitle-root': {
-              color: 'white !important',
-              fontSize: '1.25rem',
+              color: 'white',
+              fontSize: '1.5rem',
               fontWeight: 'bold',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+              padding: '24px',
             },
-            '& .MuiDialogContentText-root': {
-              color: 'white !important',
+            '& .MuiDialogContent-root': {
+              padding: '24px !important',
             },
-            '& .MuiInputBase-input': {
-              color: 'white !important',
+            '& .MuiDialogActions-root': {
+              padding: '24px',
+              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
             },
-            '& .MuiInputLabel-root': {
-              color: 'rgba(255, 255, 255, 0.7) !important',
-              '&.Mui-focused': {
+            '& .MuiTextField-root': {
+              marginBottom: 2.5,
+              '& .MuiInputLabel-root': {
+                color: 'rgba(255, 255, 255, 0.7) !important',
+                top: 0,
+                transform: 'translate(14px, 16px) scale(1)',
+                '&.Mui-focused': {
+                  color: '#3498db !important',
+                },
+                '&.MuiInputLabel-shrink': {
+                  transform: 'translate(14px, -9px) scale(0.75)',
+                  backgroundColor: '#1a1a2e',
+                  padding: '0 4px',
+                },
+              },
+              '& .MuiOutlinedInput-root': {
                 color: 'white !important',
-              }
+                backgroundColor: 'rgba(255, 255, 255, 0.05) !important',
+                borderRadius: 2,
+                '& fieldset': {
+                  borderColor: 'rgba(255, 255, 255, 0.2) !important',
+                  top: 0,
+                },
+                '&:hover fieldset': {
+                  borderColor: 'rgba(255, 255, 255, 0.4) !important',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#3498db !important',
+                },
+                '& input': {
+                  color: 'white !important',
+                  backgroundColor: 'transparent !important',
+                  padding: '16px 14px !important',
+                  height: 'auto',
+                },
+                '& .MuiSelect-select': {
+                  color: 'white !important',
+                  padding: '16px 14px !important',
+                  height: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                }
+              },
+              '& .MuiInputBase-root': {
+                color: 'white !important',
+              },
+              '& .MuiSelect-icon': {
+                color: 'white !important',
+              },
             },
           },
         }}

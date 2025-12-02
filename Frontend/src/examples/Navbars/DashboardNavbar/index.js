@@ -118,7 +118,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
             <Box color={light ? "white" : "inherit"}>
               {user ? (
                 // Sign Out Button
-                <IconButton sx={navbarIconButton} size="small" onClick={handleSignOut}>
+                <>
+                  <Typography variant="button" fontWeight="medium" color="white" sx={{ mr: 2 }}>
+                    Hi, {user.role}
+                  </Typography>
+                  <IconButton sx={navbarIconButton} size="small" onClick={handleSignOut}>
                   <Icon
                     sx={({ palette: { dark, white } }) => ({
                       color: light ? white.main : dark.main,
@@ -129,7 +133,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   <Typography variant="button" fontWeight="medium" color={light ? "white" : "dark"}>
                     Sign out
                   </Typography>
-                </IconButton>
+                  </IconButton>
+                </>
               ) : (
                 // Sign In Button
                 <Link to="/sign-in">
@@ -152,18 +157,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 </Link>
               )}
               {}
-              <IconButton
-                size="small"
-                color="inherit"
-                sx={navbarIconButton}
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-                onClick={handleOpenMenu}
-              >
-                <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
-              </IconButton>
-              {renderMenu()}
+              {/* Notification button removed */}
             </Box>
           </Box>
         )}

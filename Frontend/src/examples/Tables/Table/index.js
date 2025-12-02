@@ -46,7 +46,7 @@ function Table({ columns, rows }) {
         textAlign={align}
         fontSize={size.xxs}
         fontWeight={fontWeightBold}
-        color="text"
+        color="white"
         opacity={0.7}
         borderBottom={`${borderWidth[1]} solid ${grey[700]}`}
       >

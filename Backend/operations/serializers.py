@@ -3,6 +3,7 @@ from .models import Schedule, BerthAssignment
 
 class ScheduleSerializer(serializers.ModelSerializer):
     shipName = serializers.CharField(source="ship.shipName", read_only=True)
+    shipMMSI = serializers.CharField(source="ship.MMSI", read_only=True)
     berthName = serializers.CharField(source="berth.berthName", read_only=True)
 
     class Meta:

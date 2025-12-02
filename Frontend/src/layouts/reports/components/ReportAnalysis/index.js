@@ -3,39 +3,67 @@ import Box from "components/Box";
 import Typography from "components/Typography";
 import ReportItem from "./ReportItem";
 import api from "utils/api";
+import { IoBoat, IoCalendar, IoWarning, IoRocket, IoSwapHorizontal } from "react-icons/io5";
+import { MdAnchor } from "react-icons/md";
 
 function Report_Analysis() {
-  const reportHandlers = {
-    "All Ships": api.downloadShipsCSV,
-    "All Berths": api.downloadBerthsCSV,
-    "Ship to Berth Assignment Reports": api.downloadAssignmentsCSV,
-    "Ship Schedule Reports": api.downloadSchedulesCSV,
-    "Manual Override Reports": api.downloadOverridesCSV,
-  };
+  const reports = [
+    {
+      title: "All Ships",
+      description: "Comprehensive list of all registered ships and their details.",
+      icon: <IoBoat size="24px" />,
+      handler: api.downloadShipsCSV,
+    },
+    {
+      title: "All Berths",
+      description: "Overview of all berths, including capacity and specifications.",
+      icon: <MdAnchor size="24px" />,
+      handler: api.downloadBerthsCSV,
+    },
+    {
+      title: "Ship to Berth Assignment Reports",
+      description: "History of ship assignments to specific berths.",
+      icon: <IoSwapHorizontal size="24px" />,
+      handler: api.downloadAssignmentsCSV,
+    },
+    {
+      title: "Ship Schedule Reports",
+      description: "Detailed schedules including ETA, ETD, and status.",
+      icon: <IoCalendar size="24px" />,
+      handler: api.downloadSchedulesCSV,
+    },
+    {
+      title: "Manual Override Reports",
+      description: "Logs of all manual interventions and overrides.",
+      icon: <IoWarning size="24px" />,
+      handler: api.downloadOverridesCSV,
+    },
+    {
+      title: "AI Allocation Predictions",
+      description: "AI-generated predictions for optimal terminal and berth allocations.",
+      icon: <IoRocket size="24px" />,
+      handler: api.downloadPredictionsCSV,
+    },
+  ];
 
   return (
-    <Card id="delete-account" sx={{ height: "100%" }}>
+    <Card id="delete-account" sx={{ height: "100%", backgroundColor: "transparent", boxShadow: "none" }}>
       <Box mb="28px" display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h6" fontWeight="medium" color="white">
-          Report Analysis
+        <Typography variant="h5" fontWeight="bold" color="white">
+          Reports & Logs
         </Typography>
       </Box>
       <Box>
         <Box component="ul" display="flex" flexDirection="column" p={0} m={0}>
-          <ReportItem reportName="All Ships" onDownload={reportHandlers["All Ships"]} />
-          <ReportItem reportName="All Berths" onDownload={reportHandlers["All Berths"]} />
-          <ReportItem
-            reportName="Ship to Berth Assignment Reports"
-            onDownload={reportHandlers["Ship to Berth Assignment Reports"]}
-          />
-          <ReportItem
-            reportName="Ship Schedule Reports"
-            onDownload={reportHandlers["Ship Schedule Reports"]}
-          />
-          <ReportItem
-            reportName="Manual Override Reports"
-            onDownload={reportHandlers["Manual Override Reports"]}
-          />
+          {reports.map((report) => (
+            <ReportItem
+              key={report.title}
+              reportName={report.title}
+              description={report.description}
+              icon={report.icon}
+              onDownload={report.handler}
+            />
+          ))}
         </Box>
       </Box>
     </Card>
