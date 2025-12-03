@@ -122,7 +122,7 @@ function Dashboard() {
             </Grid>
             <Grid item xs={12} md={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "Mannual Overides" }}
+                title={{ text: "Manual Overrides" }}
                 count={String(summary.manualOverrides)}
                 //percentage={{ color: "success", text: "+5%" }}
                 icon={{ color: "info", component: <IoMan size="20px" color="white" /> }}
@@ -130,54 +130,14 @@ function Dashboard() {
             </Grid>
           </Grid>
         </Box>
-        <Box mb={3}>
-          <Grid container spacing="18px">
-            <Grid item xs={12} lg={12} xl={5}>
+        <Box mb={2}>
+          <Grid container >
+            <Grid item xs={12} lg={6} xl={6}>
               <WelcomePortFLow />
             </Grid>
-            <Grid item xs={12} lg={6} xl={3}>
-              <SatisfactionRate />
-            </Grid>
-            <Grid item xs={12} lg={6} xl={4}>
-              <ReferralTracking />
-            </Grid>
-          </Grid>
-        </Box>
-        <Box mb={3}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} lg={6} xl={7}>
-              <Card>
-                <Box sx={{ height: "100%" }}>
-                  <Typography variant="lg" color="white" fontWeight="bold" mb="5px">
-                    Live Map
-                  </Typography>
-                  <Box display="flex" alignItems="center" mb="40px"></Box>
-                  <Box
-                    sx={{
-                      hieght: "310px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alighnItems: "center",
-                      overflow: "hidden",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <img
-                      src={liveMapImg}
-                      alt="Live Map"
-                      style={{
-                        maxWidth: "100%",
-                        maxHeight: "100%",
-                        objectFit: "cover",
-                        borderRadius: "10px",
-                      }}
-                    />
-                  </Box>
-                </Box>
-              </Card>
-            </Grid>
-            <Grid item xs={12} lg={6} xl={5}>
-              <Card>
+            
+            <Grid item xs={12} lg={6} xl={6}>
+              <Card sx={{ height: "100%" }}>
                 <Box>
                   <Box
                     mb="24px"
@@ -277,14 +237,44 @@ function Dashboard() {
             </Grid>
           </Grid>
         </Box>
-        <Grid container spacing={3} direction="row" justifyContent="center" alignItems="stretch">
-          <Grid item xs={12} md={6} lg={8}>
-            <BerthStatusTable />
+        <Box mb={3}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} lg={7} xl={7}>
+              <Card>
+                <Box sx={{ height: "100%" }}>
+                  <Typography variant="lg" color="white" fontWeight="bold" mb="5px">
+                    Live Map
+                  </Typography>
+                  <Box display="flex" alignItems="center" mb="40px"></Box>
+                  <Box
+                    sx={{
+                      height: "500px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      overflow: "hidden",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    <img
+                      src={liveMapImg}
+                      alt="Live Map"
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "cover",
+                        borderRadius: "10px",
+                      }}
+                    />
+                  </Box>
+                </Box>
+              </Card>
+            </Grid>
+            <Grid item xs={12} lg={5} xl={5}>
+              <BerthStatusTable />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <Ai_Recommendation />
-          </Grid>
-        </Grid>
+        </Box>
       </Box>
       <Footer />
       </DashboardLayout>

@@ -7,7 +7,7 @@ import gif from "assets/images/WelcomeImage.png";
 const WelcomePortFLow = () => {
   return (
     <Card sx={() => ({
-      height: "340px",
+      height: "100%",
       py: "32px",
       backgroundImage: `url(${gif})`,
       backgroundSize: "cover",

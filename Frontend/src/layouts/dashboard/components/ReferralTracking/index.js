@@ -13,7 +13,7 @@ function PortMap() {
   return (
     <Card
       sx={{
-        height: '100%',
+        height: '340px',
         background: linearGradient(cardDark.main, cardDark.state, cardDark.deg),
         p: '24px'
       }}

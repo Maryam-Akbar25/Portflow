@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Card } from "@mui/material";
+import { Card, TablePagination } from "@mui/material";
 import Box from "components/Box";
 import Typography from "components/Typography";
 import Table from "examples/Tables/Table";
 import { api } from "utils/api";
 
 const columns = [
-  { name: "BerthName_Number", align: "left" },
+  { name: "BerthName_Number", align: "center" },
   { name: "status", align: "center" },
 ];
 
@@ -54,6 +54,12 @@ function BerthStatusTable() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 7;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -137,7 +143,27 @@ function BerthStatusTable() {
             },
           }}
         >
-          <Table columns={columns} rows={rows} />
+          <Table columns={columns} rows={rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} />
+          <TablePagination
+            component="div"
+            count={rows.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[]}
+            sx={{
+              color: "white",
+              ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows": {
+                color: "white",
+              },
+              ".MuiTablePagination-selectIcon": {
+                color: "white",
+              },
+              ".MuiTablePagination-actions": {
+                color: "white",
+              },
+            }}
+          />
         </Box>
       )}
     </Card>
