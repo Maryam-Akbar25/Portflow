@@ -13,7 +13,7 @@ function AutoResolve() {
 	const navigate = useNavigate(); //Initialize navigation hook
 
 	const handleResolve = () => {
-		navigate("/ManualOverride"); //Navigate to Manual Override page
+		navigate("/ManualAssignment"); //Navigate to Manual Override page
 	};
 
 	return (

@@ -56,9 +56,9 @@ const getRoutes = (userRole) => {
     },
     {
       type: "collapse",
-      name: "Manual Override",
+      name: "Manual Assignment",
       key: "panel",
-      route: "/ManualOverride",
+      route: "/ManualAssignment",
       icon: <BsCursorFill size="15px" color="inherit" />,
       component: <Panel />,
       noCollapse: true,

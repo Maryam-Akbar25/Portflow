@@ -67,8 +67,8 @@ function ManualOverrideDropdown({ selected, onChange }) {
 export default {
   columns: [
     { name: "ship name", align: "left" },            
-    { name: "berth assigned", align: "left" },        
-    { name: "berth status", align: "left" },          
+    { name: "berth assigned", align: "center" },        
+    { name: "berth status", align: "center" },          
     { name: "manual override", align: "center" },     
   ],
 

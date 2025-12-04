@@ -146,15 +146,23 @@ function Tables() {
         overrideReason: reasonToSave,
       });
 
-      // Refresh assignments to reflect the change in the table
-      const refreshed = await api.getAssignments();
-      setAssignments(Array.isArray(refreshed) ? refreshed : []);
+      // Refresh assignments and berths to reflect the change in the table
+      const [refreshedAssignments, refreshedBerths] = await Promise.all([
+        api.getAssignments(),
+        api.getBerths(),
+      ]);
+      setAssignments(Array.isArray(refreshedAssignments) ? refreshedAssignments : []);
+      setBerths(Array.isArray(refreshedBerths) ? refreshedBerths : []);
     } catch (e) {
       alert(e.message || "Failed to override berth");
       // Attempt to refresh to restore prior UI state if needed
       try {
-        const refreshed = await api.getAssignments();
-        setAssignments(Array.isArray(refreshed) ? refreshed : []);
+        const [refreshedAssignments, refreshedBerths] = await Promise.all([
+          api.getAssignments(),
+          api.getBerths(),
+        ]);
+        setAssignments(Array.isArray(refreshedAssignments) ? refreshedAssignments : []);
+        setBerths(Array.isArray(refreshedBerths) ? refreshedBerths : []);
       } catch {}
     }
   };
@@ -184,7 +192,7 @@ function Tables() {
         "berth status": <StatusTag status={currentStatus} />,
         "manual override": (
           <Select
-            value={berthId ? String(berthId) : ""}
+            value=""
             onChange={(e) => handleOverride(ship, e.target.value)}
             displayEmpty
             variant="standard"
@@ -198,11 +206,13 @@ function Tables() {
             <MenuItem value="" disabled>
               Select Berth
             </MenuItem>
-            {berths.map((b) => (
-              <MenuItem key={b.berthId} value={String(b.berthId)}>
-                {b.berthName}
-              </MenuItem>
-            ))}
+            {berths
+              .filter((b) => (b.availabilityStatus || "available") === "available")
+              .map((b) => (
+                <MenuItem key={b.berthId} value={String(b.berthId)}>
+                  {b.berthName}
+                </MenuItem>
+              ))}
           </Select>
         ),
       };
@@ -217,7 +227,7 @@ function Tables() {
           <Card>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb="22px">
               <Typography variant="lg" color="white">
-                Manual Override Panel
+                Manual Assignment Panel
               </Typography>
             </Box>
 
