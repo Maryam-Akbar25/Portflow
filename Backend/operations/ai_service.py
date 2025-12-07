@@ -4,34 +4,8 @@ import os
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.multioutput import MultiOutputClassifier
-
-# ======================================
-# Wrapper for Multi-Output
-# ======================================
-class WrapperMulti:
-    def __init__(self, model, feature_names):
-        self.model = model
-        self.feature_names = feature_names
-
-    def select_action(self, x):
-        """
-        x = 1D numpy array of feature values
-        returns: (berth, terminal)
-        """
-        pred = self.model.predict([x])[0]
-        return int(pred[0]), int(pred[1])
-
-
-# ======================================
-# Unified Model
-# ======================================
-class Model:
-    def __init__(self, model, mode="ml"):
-        self.model = model
-        self.mode = mode
-
-    def select_action(self, x):
-        return self.model.select_action(x)
+from .wrapper_multi import WrapperMulti
+from .ml_model import Model
 
 class AIModelService:
     def __init__(self):
