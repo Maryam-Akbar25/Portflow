@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from .wrapper_multi import WrapperMulti
-from .ml_model import Model
+from .ai_model import Model
 
 class AIModelService:
     def __init__(self):
